@@ -57,12 +57,21 @@ export default function UploadPage() {
         throw new Error(`Upload failed: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      setResponse(
-        `Upload successful! ${
-          data.message || ""
-        } Please click 'Back to Home' to continue.`
-      );
+      const reader =
+        response.body?.getReader() ?? new Response().body!.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          setResponse(
+            `Upload successful!
+             Please click 'Back to Home' to continue.`
+          );
+          break;
+        }
+        setResponse("Process Record " + decoder.decode(value));
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An error occurred during upload"

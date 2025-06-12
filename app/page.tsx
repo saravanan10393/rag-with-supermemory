@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Chat() {
   const [userId, setUserId] = useState("");
@@ -27,6 +28,9 @@ export default function Chat() {
   // Focus input on initial load
   useEffect(() => {
     inputRef.current?.focus();
+    if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", uuidv4());
+    }
     setUserId(localStorage.getItem("userId") || "");
   }, []);
 

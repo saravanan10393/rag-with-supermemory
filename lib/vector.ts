@@ -25,4 +25,5 @@ export async function addToDB(text: string, userId: string) {
       console.error("Failed add to memory", error);
     });
   console.log(response);
+  return response;
 }
