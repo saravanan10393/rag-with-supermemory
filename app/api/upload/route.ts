@@ -23,16 +23,18 @@ export async function POST(req: Request) {
     });
 
     // Transform records into LLM-friendly format
-    const formattedData = records.map(async (record: any, index: number) => {
-      const entries = Object.entries(record);
-      let dataString = `Product ${index + 1}:\n${entries
-        .map(([key, value]) => `${key}: ${value}`)
-        .join("\n")}`;
+    const formattedData = records.map(
+      async (record: Record<string, string>, index: number) => {
+        const entries = Object.entries(record);
+        const dataString = `Product ${index + 1}:\n${entries
+          .map(([key, value]) => `${key}: ${value}`)
+          .join("\n")}`;
 
-      // Add data to Pinecone
-      await addToDB(dataString, userId);
-      return dataString;
-    });
+        // Add data to Pinecone
+        await addToDB(dataString, userId);
+        return dataString;
+      }
+    );
 
     return NextResponse.json({
       success: true,

@@ -1,12 +1,13 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
 
 export default function Chat() {
+  const [userId, setUserId] = useState("");
   const {
     messages,
     input,
@@ -16,7 +17,7 @@ export default function Chat() {
   } = useChat({
     api: "/api/chat",
     body: {
-      userId: localStorage.getItem("userId"),
+      userId: userId,
     },
   });
 
@@ -26,6 +27,7 @@ export default function Chat() {
   // Focus input on initial load
   useEffect(() => {
     inputRef.current?.focus();
+    setUserId(localStorage.getItem("userId") || "");
   }, []);
 
   // Focus input when AI response is complete

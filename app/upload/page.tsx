@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
 export default function UploadPage() {
-  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [response, setResponse] = useState<string>("");
